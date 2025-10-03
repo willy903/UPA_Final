@@ -159,7 +159,7 @@ const About = () => {
             <div className="space-y-4 text-gray-700 dark:text-gray-300 leading-relaxed">
               <p>
                 Fondée en <span className="font-semibold text-primary-600 dark:text-primary-400">2021</span>,
-                l'Université Privée d'Ambohidratrimo est née d'une vision ambitieuse : démocratiser
+                l'Université Privée d\'Ambohidratrimo est née d'une vision ambitieuse : démocratiser
                 l'accès à une éducation supérieure de qualité pour tous les jeunes malgaches.
               </p>
               <p>
