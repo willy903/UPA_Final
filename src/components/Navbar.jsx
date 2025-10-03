@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, GraduationCap } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const navLinksByType = {
@@ -10,7 +10,7 @@ const navLinksByType = {
     { href: 'a-propos', label: 'À propos', type: 'anchor' },
     { href: 'programmes', label: 'Programmes', type: 'anchor' },
     { href: 'partenariat', label: 'Partenaires', type: 'anchor' },
-    { href: 'contact', label: 'Contacts', type: 'anchor' },
+    { href: 'contact', label: 'Contact', type: 'anchor' },
     { href: '/vie-etudiante', label: 'Vie étudiante', type: 'route' },
     { href: '/admission', label: "S'inscrire", type: 'button' },
   ],
@@ -32,6 +32,7 @@ const navLinksByType = {
 
 const Navbar = ({ type = 'home' }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState(
     type === 'listeNews' ? '' : navLinksByType[type]?.find(link => link.type === 'anchor')?.href || ''
   );
@@ -40,10 +41,19 @@ const Navbar = ({ type = 'home' }) => {
   const closeMenu = () => setIsOpen(false);
 
   useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
     if (type === 'listeNews') {
-    setActiveSection('');
-    return;
-  }
+      setActiveSection('');
+      return;
+    }
+
     const callback = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -70,92 +80,88 @@ const Navbar = ({ type = 'home' }) => {
   }, [type]);
 
   const renderLink = ({ href, label, type: linkType }) => {
-    const baseClassDesktop =
-      'block p-2 rounded transition text-sm xl:text-base duration-700 ease-in-out';
-    const baseClassMobile =
-      'block px-4 py-2 text-center rounded transition text-sm duration-700 ease-in-out';
+    const isActive = linkType === 'anchor' && activeSection === href;
 
     if (linkType === 'anchor') {
       return (
         <>
-          {/* Desktop */}
           <a
             href={`#${href}`}
             onClick={() => {
               setActiveSection(href);
               closeMenu();
             }}
-            className={`hidden lg:block ${
-              activeSection === href
-                ? 'text-blue-600 font-semibold'
-                : 'text-gray-800 hover:text-blue-600 hover:bg-blue-50 dark:text-gray-200 dark:hover:bg-gray-800'
-            } ${baseClassDesktop}`}
+            className={`hidden lg:block px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+              isActive
+                ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
+                : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-dark-800'
+            }`}
           >
             {label}
           </a>
-          {/* Mobile */}
+
           <a
             href={`#${href}`}
             onClick={() => {
               setActiveSection(href);
               closeMenu();
             }}
-            className={`block lg:hidden ${
-              activeSection === href
-                ? 'text-blue-600 font-bold'
-                : 'text-gray-800 hover:text-blue-600 hover:bg-blue-50 dark:text-gray-200 dark:hover:bg-gray-700/80'
-            } ${baseClassMobile}`}
+            className={`block lg:hidden px-6 py-3 rounded-lg text-base font-medium transition-all duration-300 ${
+              isActive
+                ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
+                : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-dark-700/50'
+            }`}
           >
             {label}
           </a>
         </>
       );
     }
+
     if (linkType === 'route') {
       return (
         <>
-          {/* Desktop */}
           <RouterLink
             to={href}
             onClick={closeMenu}
-            className={`${baseClassDesktop} hidden lg:block text-gray-800 hover:text-blue-600 hover:bg-blue-50 dark:text-gray-200 dark:hover:bg-gray-800`}
-          >
-            {label}
-          </RouterLink>
-          {/* Mobile */}
-          <RouterLink
-            to={href}
-            onClick={closeMenu}
-            className={`${baseClassMobile} block lg:hidden text-gray-800 hover:text-blue-600 hover:bg-blue-50 dark:text-gray-200 dark:hover:bg-gray-700/80`}
-          >
-            {label}
-          </RouterLink>
-        </>
-      );
-    }
-    if (linkType === 'button') {
-      return (
-        <>
-          {/* Desktop */}
-          <RouterLink
-            to={href}
-            onClick={() => {
-              setActiveSection('admissions');
-              closeMenu();
-            }}
-            className="hidden lg:inline-block bg-blue-600 text-white text-sm xl:text-base px-5 py-2 rounded transition hover:scale-[1.02] duration-700 ease-in-out"
+            className="hidden lg:block px-4 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-dark-800 transition-all duration-300"
           >
             {label}
           </RouterLink>
 
-          {/* Mobile */}
+          <RouterLink
+            to={href}
+            onClick={closeMenu}
+            className="block lg:hidden px-6 py-3 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-dark-700/50 transition-all duration-300"
+          >
+            {label}
+          </RouterLink>
+        </>
+      );
+    }
+
+    if (linkType === 'button') {
+      return (
+        <>
           <RouterLink
             to={href}
             onClick={() => {
               setActiveSection('admissions');
               closeMenu();
             }}
-            className="block lg:hidden bg-blue-600 text-white text-sm px-6 py-2 rounded transition hover:scale-[1.02] duration-700 ease-in-out"
+            className="hidden lg:inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white text-sm font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+          >
+            <GraduationCap className="w-4 h-4" />
+            {label}
+          </RouterLink>
+
+          <RouterLink
+            to={href}
+            onClick={() => {
+              setActiveSection('admissions');
+              closeMenu();
+            }}
+            className="block lg:hidden w-full text-center px-6 py-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white text-base font-semibold rounded-lg shadow-lg transition-all duration-300"
           >
             {label}
           </RouterLink>
@@ -165,49 +171,58 @@ const Navbar = ({ type = 'home' }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-md dark:bg-gray-900 duration-700 transition-all ease-in-out">
-  <div className="container mx-auto flex items-center px-4 py-3 lg:px-6 lg:py-4">
-    {/* Logo */}
-    <RouterLink to="/" className="flex items-center gap-3 flex-shrink-0">
-      <img
-        src={logo}
-        alt="Logo UPA"
-        className="w-8  transition-all duration-500"
-      />
-      <div>
-        <h1 className="text-sm sm:text-[1.2rem] md:text-[1.18rem] lg:text-[1.2rem] font-semibold text-blue-600 dark:text-blue-500 duration-700 transition-all ease-in-out">
-          Université Privée d'Ambohidratrimo
-        </h1>
-        <p className="text-[0.7rem] uppercase sm:text-sm md:text-[0.7rem] lg:text-[0.7rem] text-gray-500 dark:text-gray-200 duration-700 transition-all ease-in-out">
-          TOUJOURS PLUS HAUT
-        </p>
-      </div>
-    </RouterLink>
-
-    {/* Mobile Menu Icon */}
-    <button
-      className="lg:hidden p-2 text-blue-600 ml-auto z-50"
-      onClick={() => setIsOpen(!isOpen)}
-      aria-label="Toggle menu"
+    <header
+      className={`sticky top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? 'bg-white/95 dark:bg-dark-900/95 backdrop-blur-lg shadow-lg'
+          : 'bg-white/90 dark:bg-dark-900/90 backdrop-blur-md shadow-md'
+      }`}
     >
-      {isOpen ? <X size={28} /> : <Menu size={28} />}
-    </button>
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          <RouterLink to="/" className="flex items-center gap-3 group">
+            <div className={`relative transition-all duration-300 ${scrolled ? 'w-12' : 'w-14'}`}>
+              <div className="absolute inset-0 bg-primary-600 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300" />
+              <img
+                src={logo}
+                alt="Logo UPA"
+                className="relative w-full h-auto transition-transform duration-300 group-hover:scale-110"
+              />
+            </div>
+            <div>
+              <h1 className={`font-bold bg-gradient-to-r from-primary-600 to-primary-800 dark:from-primary-400 dark:to-primary-600 bg-clip-text text-transparent transition-all duration-300 ${
+                scrolled ? 'text-base sm:text-lg' : 'text-lg sm:text-xl'
+              }`}>
+                Université Privée d'Ambohidratrimo
+              </h1>
+              <p className={`uppercase font-semibold text-gray-500 dark:text-gray-400 transition-all duration-300 ${
+                scrolled ? 'text-[0.6rem]' : 'text-xs'
+              }`}>
+                Toujours Plus Haut
+              </p>
+            </div>
+          </RouterLink>
 
-    {/* Desktop Menu */}
-    <nav className="hidden lg:flex items-center ml-auto justify-end">
-      <ul className="flex items-center gap-1 text-center">
-        {navLinksByType[type]?.map((link) => (
-          <li key={link.href}>{renderLink(link)}</li>
-        ))}
-      </ul>
-    </nav>
-  </div>
+          <button
+            className="lg:hidden p-2 text-primary-600 dark:text-primary-400 hover:bg-gray-100 dark:hover:bg-dark-800 rounded-lg transition-colors duration-300"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
 
-      {/* Mobile Menu */}
+          <nav className="hidden lg:flex items-center gap-2">
+            {navLinksByType[type]?.map((link) => (
+              <div key={link.href}>{renderLink(link)}</div>
+            ))}
+          </nav>
+        </div>
+      </div>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-60 z-40 flex justify-center items-start h-[100vh]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -216,21 +231,35 @@ const Navbar = ({ type = 'home' }) => {
           >
             <motion.div
               onClick={(e) => e.stopPropagation()}
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="fixed top-[5.22rem] left-2 right-2 bg-white/95 dark:bg-gray-900/95 p-6 rounded-lg shadow-lg flex flex-col items-center gap-6 text-lg lg:hidden max-h-[calc(100vh-4rem)] h-auto overflow-auto"
+              className="fixed right-0 top-0 bottom-0 w-full max-w-sm bg-white dark:bg-dark-900 shadow-2xl overflow-y-auto"
             >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <img src={logo} alt="Logo UPA" className="w-12" />
+                    <div>
+                      <h2 className="font-bold text-primary-600 dark:text-primary-400 text-lg">UPA</h2>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Menu</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeMenu}
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-800 rounded-lg transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
 
-
-              <ul className="flex flex-col items-center space-y-4 w-full">
-                {navLinksByType[type]?.map((link) => (
-                  <li key={link.href} className="w-full text-center">
-                    {renderLink(link)}
-                  </li>
-                ))}
-              </ul>
+                <nav className="space-y-2">
+                  {navLinksByType[type]?.map((link) => (
+                    <div key={link.href}>{renderLink(link)}</div>
+                  ))}
+                </nav>
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -2,12 +2,12 @@ import React from 'react'
 import BNI from '../assets/BNI.jpg';
 import Nea from '../assets/Nea.jpg';
 import mvola from '../assets/mvola.jpg';
-import yas from '../assets/yas.jpg';
+import yas from '../assets/Yas.jpg';
 import edm from '../assets/edm.jpg';
 import oceantrade from '../assets/oceantrade.jpg';
 import firstimmo from '../assets/firstimmo.jpg';
 import axian from '../assets/axian.jpg';
-import LMM from '../assets/LMM.png';
+import LMM from '../assets/LMM.PNG';
 import jovena from '../assets/jovena.jpg';
 import viseo from '../assets/viseo.jpg';
 import inviso from '../assets/inviso.jpg';

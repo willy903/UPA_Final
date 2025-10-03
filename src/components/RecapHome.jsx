@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import calendarImg from '../assets/calendrier.jpg';
 import libraryImg from '../assets/biblio1.jpg';
-import axianLogo from '../assets/axian.png';
+import axianLogo from '../assets/axian.PNG';
 import axianPartenariat from '../assets/axianPartenariat.jpg';
 import welcomeImg from '../assets/sortieHecm.jpg';
 import miniLogoUpa from '../assets/UPAlogo.jpg';
@@ -10,7 +10,7 @@ import toque from '../assets/toque.png';
 import calendrier from '../assets/calendrier.png';
 import biblio from '../assets/livre.png';
 import job from '../assets/job.png';
-import toujoursPlusHaut from '../assets/toujoursPlusHaut.png';
+import toujoursPlusHaut from '../assets/toujoursPlusHaut.PNG';
 
 import 'react-calendar/dist/Calendar.css';
 import { X } from 'lucide-react';

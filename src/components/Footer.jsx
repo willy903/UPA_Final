@@ -1,12 +1,10 @@
-import { ArrowUp, Mail, Moon, PhoneCall, Sun } from 'lucide-react';
+import {
+  ArrowUp, Mail, Moon, Sun, MapPin, Phone, Facebook, Instagram
+} from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
-import toujoursPlusHaut from '../assets/toujoursPlusHaut.png';
-import facebook from '../assets/facebook.png';
-import instagram from '../assets/instagram.png';
-import mail from '../assets/gmail.png';
-import whatsapp from '../assets/whatsapp1.png';
-import localisation from '../assets/localisation.png';
+import toujoursPlusHaut from '../assets/toujoursPlusHaut.PNG';
 import ChatBotAssistant from './ChatBotAssistant';
 
 const Footer = () => {
@@ -38,103 +36,174 @@ const Footer = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const socialLinks = [
+    {
+      name: 'Facebook',
+      icon: Facebook,
+      url: 'https://www.facebook.com/p/Universit%C3%A9-priv%C3%A9e-dAmbohidratrimo-100075729058011',
+      color: 'hover:text-blue-600 dark:hover:text-blue-400'
+    },
+    {
+      name: 'Instagram',
+      icon: Instagram,
+      url: 'https://www.instagram.com/universitepriveeambohidratrimo/',
+      color: 'hover:text-pink-600 dark:hover:text-pink-400'
+    }
+  ];
+
   return (
-    <footer className="bg-white relative dark:bg-gray-800 text-gray-900 dark:text-gray-300 p-8 transition-colors duration-700 ease-in-out">
-      <div className="max-w-7xl m-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Présentation */}
-        <div className="text-left flex items-center gap-3 sm:text-center">
-          {/* <p className="mt-4 text-sm">
-            L’Université Privée d’Ambohidratrimo (UPA) est reconnue pour son excellence académique et sa recherche innovante. 
-            Nous proposons des formations d’excellence dispensée par des professeurs expérimentées, des experts et des professionnels.
-            </p> */}
-          <div className='flex flex-col text-center'>
-            <div>
-              <img src={localisation} alt="location" className="w-14 mx-auto" />
-              {/* <img src={logo} alt="Logo Université Privée d'Ambohidratrimo" className="w-10 mx-auto" /> */}
-            </div>
+    <footer className="relative bg-gradient-to-br from-dark-900 via-dark-950 to-black text-gray-300">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-5" />
 
-            <p>
-              Lot 77 Ambohitsiroa, RN4 à 15 min de la station Shell AMBOHIDRATRIMO - 105 - ANTANANARIVO; MADAGASCAR
+      <div className="relative container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <div className="space-y-6">
+            <div className="flex items-center gap-3">
+              <img src={logo} alt="Logo UPA" className="w-12 h-12" />
+              <div>
+                <h3 className="font-bold text-white text-lg">UPA</h3>
+                <p className="text-xs text-gray-400">Toujours Plus Haut</p>
+              </div>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              L'Université Privée d'Ambohidratrimo forme les leaders de demain à travers
+              une éducation d'excellence et innovante.
             </p>
-          </div>
-        </div>
-
-        {/* Réseaux sociaux */}
-        <div className="text-center">
-          <h3 className="text-lg font-semibold mb-3">Suivez-nous</h3>
-          <div className="flex justify-center space-x-4">
-            <a href="https://www.facebook.com/p/Universit%C3%A9-priv%C3%A9e-dAmbohidratrimo-100075729058011" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-              <img src={facebook} className='w-10' alt="" />
-            </a>
-            <a href="https://www.instagram.com/universitepriveeambohidratrimo/" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-              <img src={instagram} className='w-10' alt="" />
-
-            </a>
-          </div>
-          <div className="p-0 md:p-5">
-            <img src={toujoursPlusHaut} alt="Toujours plus haut" className='md:rounded bg-cover md:relative absolute ronded-[0rem] w-fit bottom-0 left-0' />
-          </div>
-        </div>
-
-        {/* Contact */}
-        <div className="text-center flex flex-col md:text-left text-sm mx-auto md:mx-0">
-          <h3 className="text-lg font-semibold mb-3 text-center">Contactez-nous</h3>          
-
-          <div className="flex items-center gap-4 mb-3">
-            <img src={mail} className="w-7 flex-shrink-0" />
-            <div className="flex flex-col items-start" style={{ minWidth: 0 }}>
-              <a
-                href="mailto:universitepriveambohidratrimo@gmail.com"
-                className="hover:text-blue-600 break-all whitespace-normal"
-              >
-                universitepriveambohidratrimo@gmail.com
-              </a>
-              <a href="mailto:viescolaire.upa@gmail.com" className="hover:text-blue-600">
-                viescolaire.upa@gmail.com
-              </a>
+            <div className="flex gap-4">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`p-2 bg-dark-800 hover:bg-dark-700 rounded-lg transition-all duration-300 ${social.color}`}
+                    aria-label={social.name}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
+          <div>
+            <h4 className="font-bold text-white text-lg mb-6">Navigation</h4>
+            <ul className="space-y-3">
+              {['Accueil', 'À propos', 'Programmes', 'Vie étudiante', 'Contact'].map((item) => (
+                <li key={item}>
+                  <a
+                    href={`#${item.toLowerCase().replace(/ /g, '-')}`}
+                    className="text-gray-400 hover:text-primary-400 transition-colors duration-300 text-sm"
+                  >
+                    {item}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <div className='flex items-center gap-4 '>
-            <img src={whatsapp} className='w-7'/>
-            <div className='flex flex-col text-start'>
-              <a href="tel:+261344900609" className="hover:text-blue-600">034 49 006 09</a>
-              <a href="tel:+261388400003" className="hover:text-blue-600">038 84 000 03</a>
+          <div>
+            <h4 className="font-bold text-white text-lg mb-6">Nos Écoles</h4>
+            <ul className="space-y-3">
+              {['HEST', 'HECM', 'HELS'].map((school) => (
+                <li key={school}>
+                  <a
+                    href="#programmes"
+                    className="text-gray-400 hover:text-primary-400 transition-colors duration-300 text-sm"
+                  >
+                    {school}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-bold text-white text-lg mb-6">Contact</h4>
+
+            <div className="flex items-start gap-3 text-sm">
+              <MapPin className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
+              <p className="text-gray-400">
+                Lot 77 Ambohitsiroa, RN4<br />
+                15 min de Shell Ambohidratrimo<br />
+                Antananarivo, Madagascar
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 text-sm">
+              <Phone className="w-5 h-5 text-primary-400 flex-shrink-0" />
+              <div className="space-y-1">
+                <a href="tel:+261344900609" className="text-gray-400 hover:text-primary-400 transition-colors block">
+                  034 49 006 09
+                </a>
+                <a href="tel:+261388400003" className="text-gray-400 hover:text-primary-400 transition-colors block">
+                  038 84 000 03
+                </a>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3 text-sm">
+              <Mail className="w-5 h-5 text-primary-400 flex-shrink-0 mt-0.5" />
+              <div className="space-y-1">
+                <a
+                  href="mailto:universitepriveambohidratrimo@gmail.com"
+                  className="text-gray-400 hover:text-primary-400 transition-colors block break-all"
+                >
+                  universitepriveambohidratrimo@gmail.com
+                </a>
+                <a
+                  href="mailto:viescolaire.upa@gmail.com"
+                  className="text-gray-400 hover:text-primary-400 transition-colors block"
+                >
+                  viescolaire.upa@gmail.com
+                </a>
+              </div>
             </div>
           </div>
         </div>
-        
+
+        <div className="border-t border-dark-800 pt-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-sm text-gray-500 text-center md:text-left">
+              &copy; {new Date().getFullYear()} Université Privée d'Ambohidratrimo. Tous droits réservés.
+            </p>
+            <img
+              src={toujoursPlusHaut}
+              alt="Toujours plus haut"
+              className="h-12 opacity-70 hover:opacity-100 transition-opacity duration-300"
+            />
+          </div>
+        </div>
       </div>
-        
-        <div className="border-t border-gray-300 dark:border-gray-700 w-full mt-8" />
 
-          <div className="duration-700 md:mb-0 mb-12 dark:border-gray-700 pt-8 text-center">
-            <p className="text-sm">&copy; Université privée d'Ambohidratrimo 2025. Tous droits réservés.</p>
-          </div>
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+        <ChatBotAssistant />
 
-      {/* Boutons flottants */}
-      <div className="fixed bottom-8 z-50 right-8 flex flex-col gap-3">
         {isVisible && (
-          <button
+          <motion.button
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
             onClick={scrollToTop}
-            className="p-2 sm:p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 hover:shadow-xl transform transition-all animate-bounce"
+            className="p-3 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+            aria-label="Retour en haut"
           >
-            <ArrowUp size={24} />
-          </button>
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
         )}
+
         <button
           onClick={toggleDarkMode}
-          className="p-2 sm:p-3 bg-gray-200 dark:bg-gray-700 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all animate-pulse"
+          className="p-3 bg-dark-800 hover:bg-dark-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+          aria-label="Toggle dark mode"
         >
           {isDarkMode ? (
-            <Sun className="text-yellow-400" size={24} />
+            <Sun className="w-5 h-5 text-yellow-400" />
           ) : (
-            <Moon className="text-gray-800" size={24} />
+            <Moon className="w-5 h-5 text-gray-300" />
           )}
         </button>
-
-        <ChatBotAssistant />
       </div>
     </footer>
   );
